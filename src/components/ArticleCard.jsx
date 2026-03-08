@@ -1,12 +1,12 @@
-import { useArticles } from '../context/ArticlesContext';
+﻿import { useArticles } from '../context/ArticlesContext';
 
 function ArticleCard({ article }) {
   const { saveArticle, removeArticle, isArticleSaved } = useArticles();
-  const saved = isArticleSaved(article.url);
+  const saved = isArticleSaved(article);
 
   const handleBookmarkClick = () => {
     if (saved) {
-      removeArticle(article.url);
+      removeArticle(article);
     } else {
       saveArticle(article);
     }
@@ -28,13 +28,21 @@ function ArticleCard({ article }) {
           {saved ? '🔖' : '📑'}
         </button>
       </div>
-      <p className="article-abstract">{article.abstract}</p>
+
+      <p className="article-abstract">
+        {article.abstract || 'No description available.'}
+      </p>
+
       <div className="article-meta">
-        <span>{article.section}</span>
-        <span>{new Date(article.published_date).toLocaleDateString()}</span>
+        <span>{article.section || 'General'}</span>
+        <span>
+          {article.published_date
+            ? new Date(article.published_date).toLocaleDateString()
+            : 'No date'}
+        </span>
       </div>
     </div>
   );
-};
+}
 
 export default ArticleCard;
